@@ -15,6 +15,10 @@ struct SettingsView: View {
                 .padding(.horizontal, 20)
                 .padding(.bottom, 24)
 
+            roomTemperatureSection(value: roomTemperatureBinding)
+                .padding(.horizontal, 20)
+                .padding(.bottom, 24)
+
             notificationSection(
                 pushEnabled: pushEnabledBinding,
                 advanceNotice: advanceNoticeBinding
@@ -47,6 +51,14 @@ struct SettingsView: View {
         Binding(
             get: { AdvanceNotice(rawValue: appState.advanceNoticeDays) ?? .oneDayBefore },
             set: { newValue in Task { await appState.updateSettings(advanceNoticeDays: newValue.rawValue) } }
+        )
+    }
+
+    /// Local-only preference — no network round-trip needed (see AppState.roomTemperatureCelsius).
+    private var roomTemperatureBinding: Binding<Double> {
+        Binding(
+            get: { appState.roomTemperatureCelsius },
+            set: { appState.roomTemperatureCelsius = $0 }
         )
     }
 
@@ -141,6 +153,40 @@ struct SettingsView: View {
             )
         }
         .buttonStyle(.plain)
+    }
+
+    private func roomTemperatureSection(value: Binding<Double>) -> some View {
+        VStack(alignment: .leading, spacing: 4) {
+            Text("ROOM TEMPERATURE")
+                .font(.system(size: 12, weight: .bold))
+                .tracking(2.9)
+                .foregroundStyle(Color.avocadoTextBrown)
+            Text("Set the room storage temperature")
+                .font(.system(size: 10))
+                .foregroundStyle(Color.avocadoTextBrown)
+
+            HStack(alignment: .lastTextBaseline, spacing: 4) {
+                Text("\(Int(value.wrappedValue.rounded()))")
+                    .font(.avocadoDisplay(56))
+                    .foregroundStyle(Color.avocadoGreen)
+                Text("°C")
+                    .font(.system(size: 18, weight: .bold))
+                    .foregroundStyle(Color.avocadoGreen)
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.top, 12)
+
+            HStack(spacing: 8) {
+                Text("10°C")
+                    .font(.system(size: 10, weight: .bold))
+                    .foregroundStyle(Color.avocadoTextBrown)
+                AvocadoSlider(value: value, range: 10...25)
+                Text("25°C")
+                    .font(.system(size: 10, weight: .bold))
+                    .foregroundStyle(Color.avocadoTextBrown)
+            }
+            .padding(.top, 12)
+        }
     }
 
     private func notificationSection(pushEnabled: Binding<Bool>, advanceNotice: Binding<AdvanceNotice>) -> some View {

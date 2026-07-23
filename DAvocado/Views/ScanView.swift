@@ -165,7 +165,11 @@ struct ScanView: View {
         guard let capturedUIImage, let data = capturedUIImage.jpegData(compressionQuality: 0.85) else { return }
         Task {
             isAnalyzing = true
-            let success = await appState.submitScan(imageData: data, source: source)
+            let success = await appState.submitScan(
+                imageData: data,
+                source: source,
+                tempCelsius: appState.roomTemperatureCelsius
+            )
             isAnalyzing = false
             if success {
                 showResult = true

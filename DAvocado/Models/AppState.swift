@@ -28,6 +28,12 @@ final class AppState {
     var pushEnabled = true
     var advanceNoticeDays = 1
 
+    /// Local-only device preference (not part of the backend's user settings) — sent as
+    /// `temp_celsius` on each scan upload. Persisted in UserDefaults, not synced to the server.
+    var roomTemperatureCelsius: Double = UserDefaults.standard.object(forKey: "roomTemperatureCelsius") as? Double ?? 24 {
+        didSet { UserDefaults.standard.set(roomTemperatureCelsius, forKey: "roomTemperatureCelsius") }
+    }
+
     var scans: [ScanListItem] = []
     var stats: ScanStatsResponse?
     var lastScan: ScanResponse?
