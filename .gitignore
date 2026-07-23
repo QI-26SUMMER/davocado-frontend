@@ -1,0 +1,14 @@
+# Xcode
+xcuserdata/
+*.xcuserstate
+*.xcscmblueprint
+DerivedData/
+.build/
+.swiftpm/
+
+# macOS
+.DS_Store
+
+# Simulator artifacts / scratch screenshots
+*.png
+!DAvocado/Assets.xcassets/**/*.png

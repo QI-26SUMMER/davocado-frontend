@@ -1,0 +1,25 @@
+name: DAvocado
+options:
+  bundleIdPrefix: com.namyujin
+  deploymentTarget:
+    iOS: "18.0"
+targets:
+  DAvocado:
+    type: application
+    platform: iOS
+    sources:
+      - path: DAvocado
+    info:
+      path: DAvocado/Info.plist
+      properties:
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.namyujin.DAvocado
+        SWIFT_VERSION: 5.0
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        TARGETED_DEVICE_FAMILY: "1"
+        DEVELOPMENT_TEAM: ""
+        CODE_SIGN_STYLE: Automatic
