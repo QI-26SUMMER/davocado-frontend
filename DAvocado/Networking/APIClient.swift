@@ -11,8 +11,18 @@ actor APIClient {
     private let decoder: JSONDecoder
     private let encoder: JSONEncoder
 
-    init(session: URLSession = .shared, tokenStore: TokenStore = KeychainTokenStore()) {
-        self.session = session
+    init(session: URLSession? = nil, tokenStore: TokenStore = KeychainTokenStore()) {
+        if let session {
+            self.session = session
+        } else {
+            // Cold starts (esp. POST /scans, which also wakes the AI service) can take
+            // 40-50s+ in practice — well past URLSession's 60s default request timeout once
+            // you add real-world network latency on a device. Give real headroom.
+            let config = URLSessionConfiguration.default
+            config.timeoutIntervalForRequest = 120
+            config.timeoutIntervalForResource = 120
+            self.session = URLSession(configuration: config)
+        }
         self.tokenStore = tokenStore
 
         let decoder = JSONDecoder()

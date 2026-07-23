@@ -145,19 +145,27 @@ struct ScanView: View {
         Button {
             analyze()
         } label: {
-            Text(buttonTitle)
-                .font(.system(size: 14, weight: .bold))
-                .tracking(2.5)
-                .foregroundStyle(hasPhoto ? Color.avocadoCream : Color.avocadoTextBrown)
-                .frame(maxWidth: .infinity)
-                .padding(.vertical, 16)
-                .background(hasPhoto ? Color.avocadoGreen : Color.avocadoTrack, in: RoundedRectangle(cornerRadius: 16))
+            HStack(spacing: 8) {
+                if isAnalyzing {
+                    ProgressView()
+                        .tint(Color.avocadoCream)
+                }
+                Text(buttonTitle)
+                    .font(.system(size: 14, weight: .bold))
+                    .tracking(2.5)
+            }
+            .foregroundStyle(hasPhoto ? Color.avocadoCream : Color.avocadoTextBrown)
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 16)
+            .background(hasPhoto ? Color.avocadoGreen : Color.avocadoTrack, in: RoundedRectangle(cornerRadius: 16))
         }
         .disabled(!hasPhoto || isAnalyzing)
     }
 
     private var buttonTitle: String {
-        if isAnalyzing { return "ANALYZING…" }
+        // The AI service can cold-start (~50s) if it's been idle — set expectations up front
+        // rather than let a long silent wait look frozen.
+        if isAnalyzing { return "ANALYZING… (up to 1 min)" }
         return hasPhoto ? "ANALYZE PHOTO" : "PLEASE SELECT A PHOTO FIRST"
     }
 

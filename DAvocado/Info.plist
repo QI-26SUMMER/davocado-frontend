@@ -18,6 +18,10 @@
 	<string>1.0</string>
 	<key>CFBundleVersion</key>
 	<string>1</string>
+	<key>NSCameraUsageDescription</key>
+	<string>D-avocado needs camera access to scan your avocado's ripeness.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>D-avocado needs photo library access to analyze a saved avocado photo.</string>
 	<key>UILaunchScreen</key>
 	<dict/>
 	<key>UISupportedInterfaceOrientations</key>

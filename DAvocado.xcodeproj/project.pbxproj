@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		0590DC773D3531D4BCFEF9C4 /* CornerBracketsOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4EA5BEF1492AAC12B659807B /* CornerBracketsOverlay.swift */; };
+		064225E42B2B87003D2F50CC /* ScanPhotoCache.swift in Sources */ = {isa = PBXBuildFile; fileRef = A15AE2D3F78C629784705E71 /* ScanPhotoCache.swift */; };
 		09A750768D1F9C9509C8FDD1 /* Color+Avocado.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68119F25B264EF0B8825B83C /* Color+Avocado.swift */; };
 		0D4C7098EC16E8CC3E1DE09F /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 717120653F5BFD56C52E8FE2 /* UserAPI.swift */; };
 		285FE6E2A4DC6C962D94C8C1 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 58815FF4109DCCFA88A37680 /* RootView.swift */; };
@@ -56,7 +57,7 @@
 		55798D4B28F33B634F18AD1B /* HistoryStatsCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryStatsCard.swift; sourceTree = "<group>"; };
 		56B0DDF39292580EBE0B93D3 /* ScanHistoryRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanHistoryRow.swift; sourceTree = "<group>"; };
 		58815FF4109DCCFA88A37680 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
-		606EFDA8321A0EA31D993546 /* DAvocado.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = DAvocado.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		606EFDA8321A0EA31D993546 /* DAvocado.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DAvocado.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		68119F25B264EF0B8825B83C /* Color+Avocado.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Avocado.swift"; sourceTree = "<group>"; };
 		6E90DB4C1A039DF33710852C /* ScanAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanAPI.swift; sourceTree = "<group>"; };
 		7086D6C51201BA3A0156045B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -67,6 +68,7 @@
 		91C1AC42EEAC72B15490AE95 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		9923E03BFB9F3B46F4B60BB1 /* LoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginView.swift; sourceTree = "<group>"; };
 		A03D81B19E0E2FCDE42B9D22 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		A15AE2D3F78C629784705E71 /* ScanPhotoCache.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScanPhotoCache.swift; sourceTree = "<group>"; };
 		B3C74E321EFBCA05B121B766 /* ScreenHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScreenHeader.swift; sourceTree = "<group>"; };
 		C089B4E514B6843FF3C70DEB /* CameraPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraPicker.swift; sourceTree = "<group>"; };
 		C5B47919772F70F11F38D183 /* HistoryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HistoryView.swift; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 				1AB6E5D46BFA9FDB7840206C /* AdvanceNotice.swift */,
 				A03D81B19E0E2FCDE42B9D22 /* AppState.swift */,
 				24FFEA569CE1B39391519E07 /* RipenessStage.swift */,
+				A15AE2D3F78C629784705E71 /* ScanPhotoCache.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -203,7 +206,6 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					3EDDF2E877B451028F3CE96C = {
-						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -267,6 +269,7 @@
 				285FE6E2A4DC6C962D94C8C1 /* RootView.swift in Sources */,
 				BC5A003A9AE059A1C7236452 /* ScanAPI.swift in Sources */,
 				AADFDE0C71ED398D1901AEE3 /* ScanHistoryRow.swift in Sources */,
+				064225E42B2B87003D2F50CC /* ScanPhotoCache.swift in Sources */,
 				F21F9BA94AD7AE677FBF2831 /* ScanView.swift in Sources */,
 				8D3EB7262092F94ADB01FE6F /* ScreenHeader.swift in Sources */,
 				A41DA2B81ADBD095FF0A069A /* SettingsView.swift in Sources */,
@@ -404,7 +407,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 76KZ98AYJ9;
 				INFOPLIST_FILE = DAvocado/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -423,7 +426,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = 76KZ98AYJ9;
 				INFOPLIST_FILE = DAvocado/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
