@@ -119,8 +119,8 @@ struct ScanView: View {
                 if let capturedUIImage {
                     Image(uiImage: capturedUIImage)
                         .resizable()
-                        .scaledToFill()
-                        .frame(height: 270)
+                        .scaledToFit()
+                        .frame(maxWidth: .infinity, maxHeight: 270)
                         .clipShape(RoundedRectangle(cornerRadius: 12))
                 } else {
                     VStack(spacing: 12) {
