@@ -4,8 +4,12 @@ struct ResultView: View {
     @Environment(AppState.self) private var appState
     @Environment(\.dismiss) private var dismiss
 
+    /// When opened from History (a specific past scan re-fetched via `GET /scans/{id}`).
+    /// When `nil`, falls back to the scan just created by the Scan tab (`appState.lastScan`).
+    var injectedScan: ScanResponse? = nil
+
     private var result: ScanResponse {
-        appState.lastScan ?? ResultView.placeholder
+        injectedScan ?? appState.lastScan ?? ResultView.placeholder
     }
 
     private static let placeholder = ScanResponse(
@@ -31,12 +35,16 @@ struct ResultView: View {
         return min(max((optimalWindowDays - days) / optimalWindowDays, 0), 1)
     }
 
+    private var dayCountdownText: String {
+        formatDayCountdown(daysToTarget: result.daysToTarget, status: result.display?.status)
+    }
+
     private var subtitle: String {
         switch result.display?.status {
         case "eat_now": return "Perfect to eat now"
         case "overripe": return "Best used in a recipe today"
         default:
-            let days = Int(result.daysToTarget?.rounded() ?? 0)
+            let days = String(format: "%.1f", result.daysToTarget ?? 0)
             return "Best to eat in \(days) days"
         }
     }
@@ -128,8 +136,8 @@ struct ResultView: View {
                 .tracking(2.9)
                 .foregroundStyle(Color.avocadoGreen)
 
-            Text(result.display?.ddayText ?? "—")
-                .font(.avocadoDisplay((result.display?.ddayText.count ?? 0) > 4 ? 40 : 74))
+            Text(dayCountdownText)
+                .font(.avocadoDisplay(dayCountdownText.count > 4 ? 40 : 74))
                 .foregroundStyle(Color.avocadoGreen)
 
             Text(subtitle)

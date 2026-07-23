@@ -3,6 +3,9 @@ import SwiftUI
 struct HistoryView: View {
     @Environment(AppState.self) private var appState
 
+    @State private var selectedScan: ScanResponse?
+    @State private var loadingScanId: Int?
+
     var body: some View {
         ScrollView {
             ScreenHeader(title: "HISTORY", subtitle: "Your Scan History") {
@@ -34,7 +37,21 @@ struct HistoryView: View {
             } else {
                 LazyVStack(spacing: 8) {
                     ForEach(appState.scans) { scan in
-                        ScanHistoryRow(scan: scan)
+                        Button {
+                            openDetail(for: scan)
+                        } label: {
+                            ScanHistoryRow(scan: scan)
+                                .overlay {
+                                    if loadingScanId == scan.id {
+                                        RoundedRectangle(cornerRadius: 12)
+                                            .fill(Color.avocadoCream.opacity(0.6))
+                                        ProgressView()
+                                            .tint(Color.avocadoGreen)
+                                    }
+                                }
+                        }
+                        .buttonStyle(.plain)
+                        .disabled(loadingScanId != nil)
                     }
                 }
                 .padding(.horizontal, 20)
@@ -53,6 +70,17 @@ struct HistoryView: View {
                 async let stats: Void = appState.loadStats()
                 _ = await (history, stats)
             }
+        }
+        .navigationDestination(item: $selectedScan) { scan in
+            ResultView(injectedScan: scan)
+        }
+    }
+
+    private func openDetail(for scan: ScanListItem) {
+        loadingScanId = scan.id
+        Task {
+            selectedScan = await appState.loadScanDetail(id: scan.id)
+            loadingScanId = nil
         }
     }
 }

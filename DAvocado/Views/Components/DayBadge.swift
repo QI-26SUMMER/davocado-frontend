@@ -1,10 +1,11 @@
 import SwiftUI
 
 struct DayBadge: View {
-    let display: ScanDisplay?
+    let daysToTarget: Double?
+    let status: String?
 
     private var background: Color {
-        switch display?.status {
+        switch status {
         case "eat_now": return .avocadoRust
         case "overripe": return .avocadoOverripeDark
         default: return Color("RipenessUnripe").opacity(0.55)
@@ -12,7 +13,7 @@ struct DayBadge: View {
     }
 
     private var foreground: Color {
-        switch display?.status {
+        switch status {
         case "eat_now": return .avocadoCream
         case "overripe": return .white
         default: return .avocadoDarkText
@@ -20,7 +21,7 @@ struct DayBadge: View {
     }
 
     var body: some View {
-        Text((display?.ddayText ?? "—").uppercased())
+        Text(formatDayCountdown(daysToTarget: daysToTarget, status: status).uppercased())
             .font(.system(size: 9, weight: .bold))
             .foregroundStyle(foreground)
             .padding(.horizontal, 8)

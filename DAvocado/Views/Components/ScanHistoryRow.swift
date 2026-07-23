@@ -35,7 +35,7 @@ struct ScanHistoryRow: View {
                 Text(Self.dateFormatter.string(from: scan.createdAt))
                     .font(.system(size: 10))
                     .foregroundStyle(Color.avocadoTextBrown)
-                DayBadge(display: scan.display)
+                DayBadge(daysToTarget: scan.daysToTarget, status: scan.display?.status)
                     .padding(.top, 4)
             }
 

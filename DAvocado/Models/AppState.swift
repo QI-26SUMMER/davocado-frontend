@@ -54,8 +54,27 @@ final class AppState {
             async let statsLoad: Void = loadStats()
             _ = await (history, statsLoad)
         } catch {
-            await APIClient.shared.clearToken()
+            await forceLocalLogOut()
         }
+    }
+
+    /// A token can expire (2-week TTL, no refresh — see API spec §0/§06) at any point during a
+    /// session, not just at launch. Any call that hits UNAUTHORIZED/TOKEN_EXPIRED should drop the
+    /// session so the user lands back on the login screen instead of a silently-broken app.
+    @discardableResult
+    private func handleIfSessionExpired(_ error: Error) async -> Bool {
+        guard case let APIError.server(code, _, _) = error,
+              code == .unauthorized || code == .tokenExpired else { return false }
+        await forceLocalLogOut()
+        return true
+    }
+
+    private func forceLocalLogOut() async {
+        await APIClient.shared.clearToken()
+        currentUser = nil
+        scans = []
+        stats = nil
+        lastScan = nil
     }
 
     // MARK: - Auth
@@ -88,11 +107,7 @@ final class AppState {
 
     func logOut() async {
         try? await AuthAPI.logout()
-        await APIClient.shared.clearToken()
-        currentUser = nil
-        scans = []
-        stats = nil
-        lastScan = nil
+        await forceLocalLogOut()
     }
 
     private func applyUser(_ user: UserSummary) {
@@ -127,6 +142,7 @@ final class AppState {
             self.pushEnabled = updated.pushEnabled
             self.advanceNoticeDays = updated.advanceNoticeDays
         } catch {
+            if await handleIfSessionExpired(error) { return }
             authErrorMessage = error.localizedDescription
         }
     }
@@ -144,6 +160,7 @@ final class AppState {
             let response = try await ScanAPI.list()
             scans = response.items
         } catch {
+            if await handleIfSessionExpired(error) { return }
             scanErrorMessage = error.localizedDescription
         }
     }
@@ -152,6 +169,7 @@ final class AppState {
         do {
             stats = try await ScanAPI.stats()
         } catch {
+            if await handleIfSessionExpired(error) { return }
             scanErrorMessage = error.localizedDescription
         }
     }
@@ -160,12 +178,18 @@ final class AppState {
         scanErrorMessage = nil
         do {
             let result = try await ScanAPI.create(imageData: imageData, source: source, tempCelsius: tempCelsius)
+            print("""
+                🥑 SCAN #\(result.id): predicted_stage=\(result.predictedStage) target_stage=\(result.targetStage) \
+                temp_celsius=\(tempCelsius ?? -1) days_to_target=\(result.daysToTarget ?? -1) \
+                dday_text=\(result.display?.ddayText ?? "nil") status=\(result.display?.status ?? "nil")
+                """)
             lastScan = result
             async let history: Void = loadHistory()
             async let statsLoad: Void = loadStats()
             _ = await (history, statsLoad)
             return true
         } catch {
+            if await handleIfSessionExpired(error) { return false }
             scanErrorMessage = error.localizedDescription
             return false
         }
@@ -173,4 +197,21 @@ final class AppState {
 
     // NOTE: no notification-toggle call here — the backend doesn't expose that endpoint yet
     // (see ScanAPI.swift). The History bell is display-only until it does.
+
+    /// `GET /scans/{id}` — re-fetches full scan detail so a History row can reconstruct the
+    /// Result screen (API spec §04: "Result 화면 재구성").
+    func loadScanDetail(id: Int) async -> ScanResponse? {
+        do {
+            let result = try await ScanAPI.get(id: id)
+            print("""
+                🥑 SCAN #\(result.id) DETAIL: predicted_stage=\(result.predictedStage) \
+                days_to_target=\(result.daysToTarget ?? -1) dday_text=\(result.display?.ddayText ?? "nil")
+                """)
+            return result
+        } catch {
+            if await handleIfSessionExpired(error) { return nil }
+            scanErrorMessage = error.localizedDescription
+            return nil
+        }
+    }
 }
