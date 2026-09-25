@@ -1,6 +1,6 @@
 import Foundation
 
-/// Thin REST client for the D-avocado API (see D-avocado_API_명세서.md v1.0).
+/// Thin REST client for the D-avocado API (see docs/API.md v1.0 in the d-avocado repo).
 /// Handles bearer-token auth, snake_case JSON conversion, the shared
 /// `{ "error": { "code", "message" } }` envelope, and multipart image upload.
 actor APIClient {

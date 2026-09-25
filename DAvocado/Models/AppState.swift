@@ -199,7 +199,7 @@ final class AppState {
     // (see ScanAPI.swift). The History bell is display-only until it does.
 
     /// `GET /scans/{id}` — re-fetches full scan detail so a History row can reconstruct the
-    /// Result screen (API spec §04: "Result 화면 재구성").
+    /// Result screen (API spec §04: "Reconstruct the Result screen").
     func loadScanDetail(id: Int) async -> ScanResponse? {
         do {
             let result = try await ScanAPI.get(id: id)

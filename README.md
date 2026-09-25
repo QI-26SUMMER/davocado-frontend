@@ -11,12 +11,12 @@ API (Spring Boot on Cloud Run).
 - **Login / Sign Up** — email + password auth
 - **Scan** — take or pick an avocado photo, upload for classification
 - **History** — past scans with ripeness stage, D-day, and notification status
-- **Settings** — preferred ripeness stage, push notification preferences
+- **Settings** — preferred ripeness stage, room temperature (10–25 °C, sent with every scan), push notification preferences
 - **Result** — ripeness stage, days until optimal, re-scan
 
 ## Requirements
 
-- Xcode 16+, iOS 18 SDK
+- Xcode 16+, iOS 18 SDK (minimum deployment target: iOS 18.0)
 - [XcodeGen](https://github.com/yonaskolb/XcodeGen) (`brew install xcodegen`) if regenerating the
   project from `project.yml`
 
@@ -35,5 +35,5 @@ open DAvocado.xcodeproj
 - Every success response is unwrapped from the backend's `{ "data": ... }` envelope
 - `APIConfig.baseURL` points at the deployed Cloud Run service
 
-Known gap: the History screen's notification bell is display-only — the backend doesn't yet
-expose a `PATCH /scans/{id}/notification` endpoint to toggle it.
+Known gap: the History screen's notification bell is display-only. The backend exposes
+`PATCH /scans/{id}/notification` to toggle it, but the app does not call it yet.
